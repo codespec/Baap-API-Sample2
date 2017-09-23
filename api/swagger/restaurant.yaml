@@ -1,0 +1,112 @@
+swagger: "2.0"
+  
+info:
+  version: 1.0.0
+  title: Restaurant Sub-API
+  description: Restaurant operations
+
+paths:  
+  /restaurant:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get the restaurants list
+      operationId: getAll
+      # define the type of response for Success "200" and Error   
+      security:
+        - Bearer: []          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new restaurant to the list
+      operationId: save
+      # restaurant info to be stored
+      parameters:
+        - name: title
+          description: Restaurant properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Restaurant"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /restaurant/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant
+      operationId: getOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a restaurant
+      operationId: update
+      # define the parameters
+      parameters:
+        - name: id
+          description: Restaurant id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Restaurant properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Restaurant"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a movie
+      operationId: delRestaurant
+      # define the parameters
+      parameters:
+        - name: id
+          description: Restaurant id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"                                                

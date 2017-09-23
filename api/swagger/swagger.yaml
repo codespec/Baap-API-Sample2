@@ -1,0 +1,1562 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /api/v1.0
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+securityDefinitions:
+  Bearer:
+    description: For accessing the API a valid JWT token must be passed in all the queries in the 'Authorization' header.
+    type: apiKey
+    name: Authorization
+    in: header  
+paths:
+  /authenticate:
+      # our controller name
+      x-swagger-router-controller: authenticate
+      get:
+        description: create token
+        operationId: token
+        # define the type of response for Success "200" and Error
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GetTokenResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+
+      post:
+        description: authenticate user
+        operationId: login
+        parameters:
+          - name: login
+            description: UserLogin properties
+            in: body
+            required: true
+            schema:
+              $ref: "#/definitions/UserLogin"                 
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/TokenResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse" 
+
+  /restaurant:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get the restaurants list
+      operationId: getRestaurantAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new restaurant to the list
+      operationId: saveRestaurant
+      # restaurant info to be stored
+      parameters:
+        - name: title
+          description: Restaurant properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Restaurant"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /restaurant/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant
+      operationId: getRestaurantOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a restaurant
+      operationId: updateRestaurant
+      # define the parameters
+      parameters:
+        - name: id
+          description: Restaurant id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Restaurant properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Restaurant"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a restaurant
+      operationId: delRestaurant
+      # define the parameters
+      parameters:
+        - name: id
+          description: Restaurant id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/customers:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant customers
+      operationId: getRestaurantCustomer
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetCustomersListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/customers/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant customer
+      operationId: getRestaurantCustomer
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetCustomerResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+
+  /restaurant/{rid}/waits:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant waits
+      operationId: getRestaurantWaits
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetWaitsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/waits/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant waits
+      operationId: getRestaurantWaits
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetWaitsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+
+  /restaurant/{rid}/dinetables:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dinetables
+      operationId: getRestaurantDineTable
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDineTablesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/dinetables/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dinetable
+      operationId: getRestaurantDineTable
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDineTableResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+
+
+  /restaurant/{rid}/dishgroups:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dishgroups
+      operationId: getRestaurantDishgroup
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishgroupsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/dishgroups/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dishgroup
+      operationId: getRestaurantDishgroup
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishgroupResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+
+
+  /restaurant/{rid}/dishes:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dishes
+      operationId: getRestaurantDish
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/dishes/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant dish
+      operationId: getRestaurantDish
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/orders:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant order
+      operationId: getRestaurantOrder
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetOrdersListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/orders/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant order
+      operationId: getRestaurantOrder
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetOrderItemsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/receipts:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant order
+      operationId: getRestaurantReceipt
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /restaurant/{rid}/receipts/{id}:
+    # our controller name
+    x-swagger-router-controller: restaurant
+    get:
+      description: get a restaurant order
+      operationId: getRestaurantReceipt
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: rid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get the customers list
+      operationId: getCustomerAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetCustomersListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new customer to the list
+      operationId: saveCustomer
+      # customer info to be stored
+      parameters:
+        - name: title
+          description: Customer properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Customer"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /customer/{id}:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer
+      operationId: getCustomerOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetCustomerResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a customer
+      operationId: updateCustomer
+      # define the parameters
+      parameters:
+        - name: id
+          description: Customer id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Customer properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Customer"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a customer
+      operationId: delCustomer
+      # define the parameters
+      parameters:
+        - name: id
+          description: Customer id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/restaurants:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer restaurants
+      operationId: getCustomerRestaurant
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/restaurants/{id}:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer restaurant
+      operationId: restaurants
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetRestaurantResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/orders:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer order
+      operationId: getCustomerOrder
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetOrdersListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/orders/{id}:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer order
+      operationId: getCustomerOrder
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetOrderItemsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/receipts:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer order
+      operationId: getCustomerReceipt
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customer/{cid}/receipts/{id}:
+    # our controller name
+    x-swagger-router-controller: customer
+    get:
+      description: get a customer order
+      operationId: getCustomerReceipt
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: cid
+          type: string
+          in: path
+          required: true
+        - name: id
+          type: string
+          in: path
+          required: true          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /dishes:
+    # our controller name
+    x-swagger-router-controller: dish
+    get:
+      description: get the dishes list
+      operationId: getDishAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new dish to the list
+      operationId: saveDish
+      # customer info to be stored
+      parameters:
+        - name: title
+          description: Dish properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Dish"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /dishes/{id}:
+    # our controller name
+    x-swagger-router-controller: dish
+    get:
+      description: get a dish
+      operationId: getDishOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a dish
+      operationId: updateDish
+      # define the parameters
+      parameters:
+        - name: id
+          description: Dish id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Dish properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Dish"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a dish
+      operationId: delDish
+      # define the parameters
+      parameters:
+        - name: id
+          description: Dish id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /dishgroups:
+    # our controller name
+    x-swagger-router-controller: dishgroup
+    get:
+      description: get the dishgroups list
+      operationId: getDishgroupAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishgroupsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new dishgroup to the list
+      operationId: saveDishgroup
+      # customer info to be stored
+      parameters:
+        - name: title
+          description: Dishgroup properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Dishgroup"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /dishgroups/{id}:
+    # our controller name
+    x-swagger-router-controller: dishgroup
+    get:
+      description: get a dishgroup
+      operationId: getDishgroupOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetDishgroupResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a dishgroup
+      operationId: updateDishgroup
+      # define the parameters
+      parameters:
+        - name: id
+          description: Dishgroup id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Dishgroup properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Dishgroup"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a dishgroup
+      operationId: delDishgroup
+      # define the parameters
+      parameters:
+        - name: id
+          description: Dishgroup id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /receipts:
+    # our controller name
+    x-swagger-router-controller: receipt
+    get:
+      description: get the receipts list
+      operationId: getReceiptAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a new receipt to the list
+      operationId: saveReceipt
+      # customer info to be stored
+      parameters:
+        - name: title
+          description: Receipt properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Receipt"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+
+  /receipts/{id}:
+    # our controller name
+    x-swagger-router-controller: receipt
+    get:
+      description: get a receipt
+      operationId: getReceiptOne
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetReceiptResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    put:
+      description: update a receipt
+      operationId: updateReceipt
+      # define the parameters
+      parameters:
+        - name: id
+          description: Receipt id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Receipt properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Receipt"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+    delete:
+      description: delete a receipt
+      operationId: delReceipt
+      # define the parameters
+      parameters:
+        - name: id
+          description: Receipt id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /movie:
+      # our controller name
+      x-swagger-router-controller: movie
+      get:
+        description: get the movies list
+        operationId: getAll
+        # define the type of response for Success "200" and Error            
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GetMoviesListResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+      post:
+        description: add a new movie to the list
+        operationId: save
+        # movie info to be stored
+        parameters:
+          - name: title
+            description: Movie properties
+            in: body
+            required: true
+            schema:
+              $ref: "#/definitions/Movie"
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GeneralResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"  
+  /movie/{id}:
+      # our controller name
+      x-swagger-router-controller: movie
+      get:
+        description: get a movie
+        operationId: getOne
+        # define the type of response for Success "200" and Error
+        parameters:
+          - name: id
+            type: string
+            in: path
+            required: true
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GetMovieResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse" 
+      put:
+        description: update a movie
+        operationId: update
+        # define the parameters
+        parameters:
+          - name: id
+            description: Movie id
+            type: string
+            in: path
+            required: true
+          - name: title
+            description: Movie properties
+            in: body
+            required: true
+            schema:
+              $ref: "#/definitions/Movie"
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GeneralResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse" 
+      delete:
+        description: delete a movie
+        operationId: delMovie
+        # define the parameters
+        parameters:
+          - name: id
+            description: Movie id
+            type: string
+            in: path
+            required: true
+        responses:
+          "200":
+            description: Success
+            schema:
+              $ref: "#/definitions/GeneralResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  GetTokenResponse:
+    required:
+      - token
+    properties:
+      token:
+        type: string  
+  TokenResponse:
+    required:
+      - token
+    properties:
+      token:
+        type: string          
+  UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          description: task object name
+        password:
+          type: string
+          description: task description
+      required:
+        - email
+        - password
+
+  Restaurant:
+      type: object
+      properties:
+        id:
+          type: integer      
+        userid:
+          type: string  
+        name:
+          type: string
+          description: restaurant name  
+        phone: 
+          type: string
+        email: 
+          type: string
+        note: 
+          type: string           
+      required:
+        - name
+
+  GetRestaurantsListResponse:
+      required:
+        - restaurants
+      properties:
+        # The array of movies
+        restaurants:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+              userid:
+                type: string                
+              name:
+                type: string
+
+  GetRestaurantResponse:
+      required:
+        - id
+        - userid
+        - name
+      properties:
+        id:
+          type: integer
+        userid:
+          type: string
+        name: 
+          type: string                    
+
+  Customer:
+      type: object
+      properties:
+        id:
+          type: integer      
+        userid:
+          type: string  
+        name:
+          type: string
+          description: customer name  
+        phone: 
+          type: string
+        email: 
+          type: string
+        note: 
+          type: string           
+      required:
+        - name
+
+  GetCustomersListResponse:
+      required:
+        - customers
+      properties:
+        # The array of movies
+        customers:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+              userid:
+                type: string                
+              name:
+                type: string
+
+  GetCustomerResponse:
+      required:
+        - id
+        - userid
+        - name
+      properties:
+        id:
+          type: integer
+        userid:
+          type: string
+        name: 
+          type: string
+
+  GetDineTablesListResponse:
+      required:
+        - dinetables
+      properties:
+        # The array of movies
+        dinetables:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
+  GetDineTableResponse:
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+
+  GetWaitsListResponse:
+      required:
+        - waits
+      properties:
+        # The array of movies
+        waits:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
+  GetWaitsResponse:
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+
+  Dish:
+      type: object
+      properties:
+        id:
+          type: integer      
+        name:
+          type: string
+          description: dish name  
+        note: 
+          type: string           
+      required:
+        - name
+
+  GetDishesListResponse:
+      required:
+        - dishes
+      properties:
+        # The array of movies
+        dishes:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+
+  GetDishResponse:
+      required:
+        - name
+      properties:
+        name: 
+          type: string
+
+  Dishgroup:
+      type: object
+      properties:
+        id:
+          type: integer      
+        name:
+          type: string
+          description: dishgroup name  
+        note: 
+          type: string           
+      required:
+        - name
+
+  GetDishgroupsListResponse:
+      required:
+        - dishgroups
+      properties:
+        # The array of movies
+        dishgroups:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+
+  GetDishgroupResponse:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name: 
+          type: string
+
+  Order:
+      type: object
+      properties:
+        id:
+          type: integer      
+
+  OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer      
+        name:
+          type: string
+          description: dish name  
+        note: 
+          type: string           
+
+  GetOrdersListResponse:
+      required:
+        - orders
+      properties:
+        # The array of movies
+        orders:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
+  GetOrderResponse:
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+
+  GetOrderItemsListResponse:
+      required:
+        - orderitems
+      properties:
+        # The array of movies
+        orderitems:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
+  Receipt:
+      type: object
+      properties:
+        id:
+          type: integer      
+        name:
+          type: string
+          description: name  
+        note: 
+          type: string           
+      required:
+        - name
+
+  GetReceiptsListResponse:
+      required:
+        - receipts
+      properties:
+        # The array of movies
+        receipts:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+
+  GetReceiptResponse:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name: 
+          type: string
+
+  Movie:
+      type: object
+      properties:
+        title:
+          type: string
+          description: task object name
+        year:
+          type: number
+          description: task description
+      required:
+        - title
+        - year
+  GetMoviesListResponse:
+      required:
+        - movies
+      properties:
+        # The array of movies
+        movies:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              year:
+                type: number
+  GetMovieResponse:
+      required:
+        - id
+        - title
+        - year
+      properties:
+        id:
+          type: string
+        title: 
+          type: string
+        year:
+          type: number  
+
+  GeneralResponse:
+      type: object
+      properties:
+        success:
+          type: number
+          description: returns 1 if successful
+        description:
+          type: string
+          description: a short comment 
+      required:
+        - success
+        - description
+  TestResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
