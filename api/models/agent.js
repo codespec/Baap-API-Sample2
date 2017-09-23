@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       password: { type: DataTypes.STRING(100)},
       email: { type: DataTypes.STRING(100)},
       phone: { type: DataTypes.STRING(100)},
-      creatdate: { type: DataTypes.DATE, allowNull: true},
+      createdate: { type: DataTypes.DATE, allowNull: true},
       level: { type: DataTypes.INTEGER(1) },
       status: { type: DataTypes.ENUM('Y', 'N') },
       note: { type: DataTypes.STRING, allowNull: true}      

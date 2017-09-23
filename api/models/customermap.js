@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       id: { type: DataTypes.INTEGER(11), primaryKey: true},
       rid: { type: DataTypes.INTEGER(11)},
       cid: { type: DataTypes.INTEGER(11)},
-      creatdate: { type: DataTypes.DATE, allowNull: true},
+      createdate: { type: DataTypes.DATE, allowNull: true},
       status: { type: DataTypes.ENUM('Y', 'N') }      
     },
     {
