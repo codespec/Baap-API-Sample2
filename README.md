@@ -90,11 +90,25 @@ git clone https://github.com/codespec/Baap-API-Sample2.git
 
       for other
 
+      Get dishgroups
+
+        http://localhost:10010/api/v1.0/dishgroups
+
+      Get dishes
+
+        http://localhost:10010/api/v1.0/dishes
 
       Get country
+
+        http://localhost:10010/api/v1.0/countries
       
       Get state
 
+        http://localhost:10010/api/v1.0/states
+
+      Get areacode
+
+        http://localhost:10010/api/v1.0/areacodes
 
 
 for swagger

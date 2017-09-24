@@ -1053,6 +1053,57 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /areacodes:
+    # our controller name
+    x-swagger-router-controller: areacode
+    get:
+      description: get the areacodes list
+      operationId: getAreacodeAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetAreacodesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /countries:
+    # our controller name
+    x-swagger-router-controller: country
+    get:
+      description: get the countries list
+      operationId: getCountryAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetCountriesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /states:
+    # our controller name
+    x-swagger-router-controller: state
+    get:
+      description: get the states list
+      operationId: getStateAll
+      # define the type of response for Success "200" and Error          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetStatesListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -1068,7 +1119,8 @@ definitions:
       - token
     properties:
       token:
-        type: string          
+        type: string  
+
   UserLogin:
       type: object
       properties:
@@ -1085,21 +1137,17 @@ definitions:
   Restaurant:
       type: object
       properties:
-        id:
-          type: integer      
-        userid:
-          type: string  
         name:
           type: string
           description: restaurant name  
-        phone: 
-          type: string
         email: 
           type: string
+        phone: 
+          type: string
         note: 
-          type: string           
-      required:
-        - name
+          type: string   
+        tax:
+          type: string        
 
   GetRestaurantsListResponse:
       required:
@@ -1145,6 +1193,10 @@ definitions:
           type: string
         email: 
           type: string
+        lever:
+          type: integer
+        status:
+          type: string  
         note: 
           type: string           
       required:
@@ -1162,22 +1214,33 @@ definitions:
             properties:
               id:
                 type: integer
-              userid:
-                type: string                
               name:
                 type: string
-
+              email:
+                type: string
+              phone:
+                type: string
+              level:
+                type: integer
+              status:
+                type: string
+                
   GetCustomerResponse:
       required:
         - id
-        - userid
         - name
       properties:
         id:
           type: integer
-        userid:
-          type: string
         name: 
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        level:
+          type: integer
+        status:
           type: string
 
   GetDineTablesListResponse:
@@ -1192,6 +1255,12 @@ definitions:
             properties:
               id:
                 type: integer
+              name:
+                type: string
+              status:
+                type: string
+              note:
+                type: string
 
   GetDineTableResponse:
       required:
@@ -1199,6 +1268,12 @@ definitions:
       properties:
         id:
           type: integer
+        name:
+          type: string
+        status:
+          type: string
+        note:
+          type: string
 
   GetWaitsListResponse:
       required:
@@ -1212,22 +1287,41 @@ definitions:
             properties:
               id:
                 type: integer
-
+              name:
+                type: string
+              createdate:
+                type: string          
+              status:
+                type: string
+              note:
+                type: string
+                                
   GetWaitsResponse:
       required:
         - id
       properties:
         id:
           type: integer
+        name:
+          type: string
+        createdate:
+          type: string          
+        status:
+          type: string
+        note:
+          type: string
 
   Dish:
       type: object
       properties:
-        id:
+        dishid:
           type: integer      
         name:
           type: string
           description: dish name  
+        cookbox:
+          type: integer  
+          description: cooking area number            
         note: 
           type: string           
       required:
@@ -1243,17 +1337,27 @@ definitions:
           items: 
             type: object
             properties:
-              id:
+              dishid:
                 type: integer
               name:
                 type: string
+              cookbox:
+                type: integer
+              note: 
+                type: string                                 
 
   GetDishResponse:
       required:
         - name
       properties:
+        dishid:
+          type: integer
         name: 
           type: string
+        cookbox:
+          type: integer          
+        note: 
+          type: string  
 
   Dishgroup:
       type: object
@@ -1282,6 +1386,9 @@ definitions:
                 type: integer
               name:
                 type: string
+                description: dishgroup name
+              note: 
+                type: string  
 
   GetDishgroupResponse:
       required:
@@ -1292,6 +1399,9 @@ definitions:
           type: integer
         name: 
           type: string
+          description: dishgroup name
+        note: 
+          type: string  
 
   GetOrdersListResponse:
       required:
@@ -1304,6 +1414,18 @@ definitions:
             type: object
             properties:
               id:
+                type: integer
+              ordertype:
+                type: integer
+              orderdate:
+                type: string  
+              scheduledate:
+                type: string
+              takeoutdate:
+                type: string
+              rstate:
+                type: integer
+              cstate:
                 type: integer
 
   GetOrderItemsListResponse:
@@ -1318,19 +1440,30 @@ definitions:
             properties:
               id:
                 type: integer
+              orderid:
+                type: integer
+              dishid:
+                type: integer  
+              qty:
+                type: integer
+              note:
+                type: string
+              createdate:
+                type: string
+              state:
+                type: integer
 
   Receipt:
       type: object
       properties:
         id:
-          type: integer      
-        name:
-          type: string
-          description: name  
-        note: 
-          type: string           
-      required:
-        - name
+          type: integer 
+        orderid:
+          type: integer                          
+        price:
+          type: integer
+        tip:
+          type: integer
 
   GetReceiptsListResponse:
       required:
@@ -1344,19 +1477,67 @@ definitions:
             properties:
               id:
                 type: integer
-              name:
-                type: string
-
+              orderid:
+                type: integer
+              price:
+                type: integer
+              tip:
+                type: integer
+                
   GetReceiptResponse:
       required:
         - id
-        - name
       properties:
         id:
           type: integer
-        name: 
-          type: string
-  
+        orderid:
+          type: integer
+        price:
+          type: integer
+        tip:
+          type: integer
+
+  GetAreacodesListResponse:
+      required:
+        - areacodes
+      properties:
+        # The array of movies
+        areacodes:
+          type: array
+          items: 
+            type: object
+            properties:
+              areacode:
+                type: string
+              areaname:
+                type: string
+
+  GetCountriesListResponse:
+      required:
+        - countries
+      properties:
+        # The array of movies
+        countries:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
+  GetStatesListResponse:
+      required:
+        - states
+      properties:
+        # The array of movies
+        states:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+
   GeneralResponse:
       type: object
       properties:

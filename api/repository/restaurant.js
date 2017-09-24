@@ -135,7 +135,7 @@ module.exports = function() {
 
     findorder(rid, id,res) {
       if(id > 0) {
-        models['order'].findAll({
+        models['orderbox'].findAll({
           include: [{
               model: models['orderitem'], 
               include: [{model: models['dish']}]
@@ -146,7 +146,7 @@ module.exports = function() {
         });        
       }
       else {
-        models['order'].findAll({
+        models['orderbox'].findAll({
           where: {rid: rid}
         }).then(orders => {
           res.json({ orders: orders});

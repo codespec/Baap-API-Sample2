@@ -17,16 +17,22 @@ module.exports = function() {
       * Retrieve a dish with a given id or return all the customers 
       * if the id is undefined.
       */
-    find(id, res) {
+    find(id,res) {
       if(id > 0) {
         models['dish'].findOne({
-          where: {id: id}
+          include: {
+            model: models['dishpicture'], attributes: ['filename']
+          },          
+          where: {dishid: id}
         }).then(dish => {
           res.json(dish);
         });        
       }
       else {
         models['dish'].findAll({
+          include: {
+            model: models['dishpicture'], attributes: ['filename']
+          }
         }).then(dishes => {
           res.json({ dishes: dishes});
         });

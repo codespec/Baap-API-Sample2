@@ -3,10 +3,24 @@ var util = require('util');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 module.exports = {
-  token,authenticate
+  token, authenticate, login
 };
 
 function token(req, res, next) {
+  
+    var user = {
+      name: 'jake',
+      password: '1234',
+      admin: true
+    };
+  
+    var token = jwt.sign(user, "secret", {
+      expiresIn: 1440 // expires in 24 hours
+    });
+    res.json({ token: token });
+  }
+
+function login(req, res, next) {
 
   var user = {
     name: 'jake',
