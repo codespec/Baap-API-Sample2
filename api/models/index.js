@@ -6,7 +6,7 @@ var path      = require("path");
 var Sequelize = require('sequelize');
 const dbconfig  = require('../../config/config.js');
 
-console.log("sequelize start");
+//console.log("sequelize start");
 
 const sequelize = new Sequelize(dbconfig.database, dbconfig.username, dbconfig.password, {
   host: dbconfig.hostname,
@@ -30,7 +30,7 @@ fs.readdirSync(__dirname)
   })
   .forEach(function(file) {
     var model = sequelize.import(path.join(__dirname, file));
-    console.log(model.name);
+    //console.log(model.name);
     db[model.name] = model;
   });
 

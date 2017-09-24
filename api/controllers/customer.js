@@ -4,8 +4,11 @@ var db = require('../repository/customer')();
 // Exports all the functions to perform on the db
 module.exports = {
   getCustomerAll,
+  getCustomerRestaurants,
   getCustomerRestaurant,
+  getCustomerOrders, 
   getCustomerOrder, 
+  getCustomerReceipts,
   getCustomerReceipt,
   saveCustomer, 
   getCustomerOne, 
@@ -24,6 +27,13 @@ function getCustomerOne(req, res, next) {
     db.find(id, res);
 }
 
+//GET /customer/{cid}/restaurants operationId
+function getCustomerRestaurants(req, res, next) {
+    var cid = req.swagger.params.cid.value;
+    var id = 0;
+    db.findrestaurant(cid, id, res);
+}
+
 //GET /customer/{cid}/restaurants/{id} operationId
 function getCustomerRestaurant(req, res, next) {
     var cid = req.swagger.params.cid.value;
@@ -33,6 +43,13 @@ function getCustomerRestaurant(req, res, next) {
     db.findrestaurant(cid, id, res);
 }
 
+//GET /customer/{cid}/orders operationId
+function getCustomerOrders(req, res, next) {
+    var cid = req.swagger.params.cid.value;
+    var id = 0;
+    db.findorder(cid, id, res);
+}
+
 //GET /customer/{cid}/orders/{id} operationId
 function getCustomerOrder(req, res, next) {
     var cid = req.swagger.params.cid.value;
@@ -40,6 +57,13 @@ function getCustomerOrder(req, res, next) {
     if(req.swagger.params.id !== undefined)
         id = req.swagger.params.id.value;
     db.findorder(cid, id, res);
+}
+
+//GET /customer/{cid}/receipts operationId
+function getCustomerReceipts(req, res, next) {
+    var cid = req.swagger.params.cid.value;
+    var id = 0;
+    db.findreceipt(cid, id, res);
 }
 
 //GET /customer/{cid}/receipts/{id} operationId
